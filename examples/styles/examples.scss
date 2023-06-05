@@ -64,6 +64,12 @@ div.board {
   width: calc(100vw - 40px);
   margin-right: 20px;
   margin-bottom: 20px;
+  &.board-small {
+    max-width: 320px;
+  }
+  &.board-large {
+    max-width: 680px;
+  }
 }
 
 .clearfix::after {

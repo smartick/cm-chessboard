@@ -5,13 +5,15 @@
  */
 
 import {describe, it, assert} from "../node_modules/teevi/src/teevi.js"
-import {Chessboard, MARKER_TYPE} from "../src/cm-chessboard/Chessboard.js"
+import {Chessboard} from "../src/Chessboard.js"
+import {MARKER_TYPE, Markers} from "../src/extensions/markers/Markers.js"
 
 describe("TestMarkers", () => {
 
     it("should set and get markers", () => {
         const chessboard = new Chessboard(document.getElementById("TestMarkers"), {
-            sprite: {url: "../assets/images/chessboard-sprite.svg"}
+            assetsUrl: "../assets/",
+            extensions: [{class: Markers}]
         })
         chessboard.addMarker(MARKER_TYPE.square, "e5")
         chessboard.addMarker(MARKER_TYPE.frame, "b6")

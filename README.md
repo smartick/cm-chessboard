@@ -8,19 +8,25 @@ in [chess-console](https://shaack.com/projekte/chess-console/examples/load-pgn.h
 [cm-fen-editor](https://shaack.com/projekte/cm-fen-editor/). They are all nice written ES6 Modules to handle different
 aspects of chess games.
 
+> Note: With version 7, I made a heavy allover refactoring. The chessboard props have been changed and the files structure also. Version 7 of the cm-chessboard will not work out of the box after an update from a previous version. Also with version 7 comes the move cancelling via secondary mouse button.
+
 ## Features
 
 - **No dependencies**, just clean ES6
 - [Can handle moves input via click or drag](https://shaack.com/projekte/cm-chessboard/examples/validate-moves.html)
 - [Styleable via css and supports multiple piece sets](https://shaack.com/projekte/cm-chessboard/examples/different-styles.html)
 - Uses SVG for rendering
-- [Allows adding **extensions** to extend the functionality](https://shaack.com/projekte/cm-chessboard/examples/extensions/chessboard-arrows-extension.html)
+- [Allows adding **extensions** to extend the functionality](https://shaack.com/projekte/cm-chessboard/examples/extensions/arrows-extension.html)
 
 ## Extensions
 
-- [Accessibility Extension](https://shaack.com/projekte/cm-chessboard/examples/extensions/chessboard-accessibility-extension.html)
-- [Arrows Extension](https://shaack.com/projekte/cm-chessboard/examples/extensions/chessboard-arrows-extension.html) (by [@barakmich](https://github.com/barakmich))
-- [PromotionDialog Extension](https://shaack.com/projekte/cm-chessboard/examples/extensions/chessboard-promotion-dialog-extension.html)  🆕
+The core of cm-chessboard is small, fast and reduced to the essentials. You can extend its functionality with extensions.
+
+- [Accessibility Extension](https://shaack.com/projekte/cm-chessboard/examples/extensions/accessibility-extension.html) - makes the chessboard more accessible
+- [Arrows Extension](https://shaack.com/projekte/cm-chessboard/examples/extensions/arrows-extension.html) - renders arrows on the chessboard
+- [Markers Extension](https://shaack.com/projekte/cm-chessboard/examples/extensions/markers-extension.html)  🆕 - create markers on specific squares
+- [PromotionDialog Extension](https://shaack.com/projekte/cm-chessboard/examples/extensions/promotion-dialog-extension.html)  🆕 - shows a dialog to select the piece to promote to
+- [RenderVideo Extension](https://shaack.com/projekte/cm-chessboard/examples/extensions/render-video-extension.html)  🆕 - renders a video from the pieces movement on the board
 
 ## Demo and repository
 
@@ -35,7 +41,7 @@ aspects of chess games.
 
 **Option 2:** Download the code from [GitHub](https://github.com/shaack/cm-chessboard).
 
-**Option 3:** Use it via CDN https://cdn.jsdelivr.net/npm/cm-chessboard@4/src/cm-chessboard/Chessboard.js
+**Option 3:** Use it via CDN https://cdn.jsdelivr.net/npm/cm-chessboard@7/src/Chessboard.js
 
 After installation, copy the sprite in `cm-chessboard/assets/images/` to your projects `assets/images/`
 folder. If you put the sprite somewhere else you have to configure the location
@@ -50,14 +56,14 @@ dependencies.
 Preconditions for using cm-chessboard in a web page:
 
 1. **include the css:** `assets/styles/cm-chessboard.css`
-2. **import the ES6 module:** `import {Chessboard} from "PATH/TO/src/cm-chessboard/Chessboard.js"`
+2. **import the ES6 module:** `import {Chessboard} from "PATH/TO/src/Chessboard.js"`
 
 Example, showing a FEN:
 
 ```html
 
 <script type="module">
-    import {Chessboard} from "./src/cm-chessboard/Chessboard.js"
+    import {Chessboard} from "./src/Chessboard.js"
 
     new Chessboard(document.getElementById("containerId"),
             {position: "rn2k1r1/ppp1pp1p/3p2p1/5bn1/P7/2N2B2/1PPPPP2/2BNK1RR"})
@@ -72,26 +78,26 @@ examples.
 Below is the default configuration
 
 ```javascript
-let defaultProps = {
-    position: FEN.empty, // set as fen, can use FEN.start or FEN.empty
-    orientation: COLOR.white, // white on bottom
-    responsive: true, // resize the board automatically to the size of the context element
-    animationDuration: 300, // pieces animation duration in milliseconds. Disable all animation with `0`.
-    language: navigator.language.substring(0, 2).toLowerCase(), // supports "de" and "en" for now, used for pieces naming
-    style: {
-      cssClass: "default", // set the css theme of the board, try "green", "blue" or "chess-club"
-      showCoordinates: true, // show ranks and files
-      borderType: BORDER_TYPE.none, // "thin" thin border, "frame" wide border with coordinates in it, "none" no border
-      aspectRatio: 1, // height/width of the board
-      moveFromMarker: MARKER_TYPE.frame, // the marker used to mark the start square
-      moveToMarker: MARKER_TYPE.frame, // the marker used to mark the square where the figure is moving to
+this.props = {
+  position: FEN.empty, // set position as fen, use FEN.start or FEN.empty as shortcuts
+  orientation: COLOR.white, // white on bottom
+  responsive: true, // resize the board automatically to the size of the context element
+  language: navigator.language.substring(0, 2).toLowerCase(), // supports "de" and "en" for now, used for pieces naming
+  assetsUrl: "./assets/", // put all css and sprites in this folder
+  assetsCache: true, // cache sprites
+  style: {
+    cssClass: "default", // set the css theme of the board, try "green", "blue" or "chess-club"
+    showCoordinates: true, // show ranks and files
+    borderType: BORDER_TYPE.none, // "thin" thin border, "frame" wide border with coordinates in it, "none" no border
+    aspectRatio: 1, // height/width of the board
+    pieces: {
+      type: PIECES_FILE_TYPE.svgSprite, // pieces are in an SVG sprite, no other type supported for now
+      file: "standard.svg", // the filename of the sprite in `assets/pieces/`
+      tileSize: 40 // the tile size in the sprite
     },
-    sprite: {
-      url: "./assets/images/chessboard-sprite.svg", // pieces and markers are stored in a sprite file
-      size: 40, // the sprite tiles size, defaults to 40x40px
-      cache: true // cache the sprite
-    },
-    extensions: [ /* {class: ExtensionClass, props: { ... }} */] // add extensions here
+    animationDuration: 300 // pieces animation duration in milliseconds. Disable all animations with `0`.
+  },
+  extensions: [ /* {class: ExtensionClass, props: { ... }} */] // add extensions here
 }
 ```
 
@@ -113,7 +119,7 @@ after the animation finished.
 
 ### getPiece(square)
 
-Returns the piece on a square or `undefined` if the square is empty.
+Returns the piece on a square or `null` if the square is empty.
 
 ### movePiece(squareFrom, squareTo, animated = false)
 
@@ -133,7 +139,7 @@ Returns the board position as `fen`.
 
 ### addMarker(type, square)
 
-> signature changed with V5.1 from (square, type) to (type, square)
+> Moved to the Markers extension with version 6
 
 Adds a marker on a square.
 
@@ -148,11 +154,11 @@ and `slice` is the `id` in `sprite.svg`. See also [Create your own custom marker
 below.
 
 [Example for **addMarker**, **getMarkers** and
-**removeMarkers**](https://shaack.com/projekte/cm-chessboard/examples/context-input.html)
+**removeMarkers**](https://shaack.com/projekte/cm-chessboard/examples/extensions/markers-extension.html)
 
 ### getMarkers(type = undefined, square = undefined)
 
-> signature changed with V5.1 from (square, type) to (type, square)
+> Moved to the Markers extension with version 6
 
 Returns the board's markers as an array.
 
@@ -162,7 +168,7 @@ Set `both` to `undefined` to get all markers on the board.
 
 ### removeMarkers(type = undefined, square = undefined)
 
-> signature changed with V5.1 from (square, type) to (type, square)
+> Moved to the Markers extension with version 6
 
 Removes markers from the board.
 
@@ -202,7 +208,7 @@ board.enableMoveInput((event) => {
 
 The event has the following **`event.type`**:
 
-- **`INPUT_EVENT_TYPE.moveInputStarted`**: User started the move input, `event.square` contains the coordinates. Return true or false to validate the start square.
+- **`INPUT_EVENT_TYPE.moveInputStarted`**: User started the move input, `event.squareFrom` contains the coordinates. Return true or false to validate the start square.
 - **`INPUT_EVENT_TYPE.validateMoveInput`**: User finished the move input, `event.squareFrom` and `event.squareTo` contain the coordinates. Return true or false to validate the move input.
 - **`INPUT_EVENT_TYPE.moveInputCanceled`**: User canceled the move with clicking again on the start square or clicking outside the board.
 
@@ -210,7 +216,7 @@ The event has the following **`event.type`**:
 chessboard.enableMoveInput((event) => {
   switch (event.type) {
     case INPUT_EVENT_TYPE.moveInputStarted:
-      console.log(`moveInputStarted: ${event.square}`)
+      console.log(`moveInputStarted: ${event.squareFrom}`)
       // return `true`, if input is accepted/valid, `false` aborts the interaction, the piece will not move
       return true
     case INPUT_EVENT_TYPE.validateMoveInput:
@@ -243,7 +249,7 @@ board.enableSquareSelect((event) => {
 })
 ```
 
-[Example for **enableSquareSelect**](https://shaack.com/projekte/cm-chessboard/examples/input-callbacks.html)
+[Example for **enableSquareSelect**](https://shaack.com/projekte/cm-chessboard/examples/extensions/markers-extension.html)
 
 **`event.square`** contains the coordinates of the user input.
 
@@ -284,7 +290,7 @@ Important is the id "markerCircle". You can set the marker
 with `board.addMarker({class: "markerSquare", slice: "markerSquare"}, "e4")`
 "emphasize" is the css class, which defines the color and opacity of the marker. "slice" is the id of the marker in the
 SVG. This is
-also demonstrated in the [mark squares example](https://shaack.com/projekte/cm-chessboard/examples/input-callbacks.html)
+also demonstrated in the [mark squares example](https://shaack.com/projekte/cm-chessboard/examples/extensions/markers-extension.html)
 .
 
 The color and stroke-width of the marker is defined in the css (or scss). You could also define your marker completely
@@ -293,12 +299,12 @@ in the sprite, but then that is not so flexible.
 These are the css styles of the markers "markerSquare" and "markerCircleRed".
 
 ```css
-marker.markerSquare {
+marker.marker-square {
     fill: black;
     opacity: 0.11;
 }
 
-marker.markerCircleRed {
+marker.marker-circle-red {
     stroke: #aa0000;
     stroke-width: 3px;
     opacity: 0.4;
@@ -350,8 +356,9 @@ export const EXTENSION_POINT = {
   positionChanged: "positionChanged", // the positions of the pieces was changed
   boardChanged: "boardChanged", // the board (orientation) was changed
   moveInputToggled: "moveInputToggled", // move input was enabled or disabled
-  moveInput: "moveInput", // move started, to validate or canceled // TODO validation not possible for now, see https://github.com/shaack/cm-chessboard/issues/82
+  moveInput: "moveInput", // move started, moving over a square, validating or canceled
   redrawBoard: "redrawBoard", // called after redrawing the board
+  animation: "animation", // called on animation start, end and on every animation frame
   destroy: "destroy" // called, before the board is destroyed
 }
 ```
@@ -373,9 +380,11 @@ const chessboard = new Chessboard(document.getElementById("board"), {
 
 ### registerMethod(name, callback)
 
+> Deprecated 2023-05-18, just add methods directly to the chessboard class instance.
+
 Add methods to the main chessboard from your extension with `this.registerMethod("name", callback)`
 like `addArrow(type, from, to)` in the
-[Arrows extension](https://shaack.com/projekte/cm-chessboard/examples/extensions/chessboard-arrows-extension.html).
+[Arrows extension](https://shaack.com/projekte/cm-chessboard/examples/extensions/arrows-extension.html).
 
 ```js
 this.registerMethod("addArrow", this.addArrow)
@@ -392,7 +401,7 @@ of the current position in the alt tag of the board image and enables a form to 
 can also display the board as HTML table and the pieces as list.
 
 See
-example [Accessibility extension](https://shaack.com/projekte/cm-chessboard/examples/extensions/chessboard-accessibility-extension.html)
+example [Accessibility extension](https://shaack.com/projekte/cm-chessboard/examples/extensions/accessibility-extension.html)
 
 ##### Usage
 
@@ -423,7 +432,7 @@ const chessboard = new Chessboard(document.getElementById("board"), {
 
 Draw arrows on the board.
 
-Example: [Arrows extension](https://shaack.com/projekte/cm-chessboard/examples/extensions/chessboard-arrows-extension.html)
+Example: [Arrows extension](https://shaack.com/projekte/cm-chessboard/examples/extensions/arrows-extension.html)
 
 ##### Methods
 

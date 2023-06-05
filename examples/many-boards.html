@@ -5,10 +5,9 @@
     <title>cm-chessboard</title>
     <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0"/>
     <link rel="stylesheet" href="styles/examples.css"/>
-    <link rel="stylesheet" href="../assets/styles/cm-chessboard.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js"></script>
+    <link rel="stylesheet" href="../assets/chessboard.css"/>
     <!--suppress CssUnusedSymbol -->
-    <style type="text/css">
+    <style>
         div.board {
             float: left;
             width: 155px;
@@ -23,7 +22,8 @@
 <div id="boards"></div>
 <!--suppress JSUnresolvedFunction -->
 <script type="module">
-    import {Chessboard} from "../src/cm-chessboard/Chessboard.js"
+    import {Chessboard} from "../src/Chessboard.js"
+    import {Chess} from "https://cdn.jsdelivr.net/npm/chess.mjs@1/src/chess.mjs/Chess.js"
 
     const boardsDiv = document.getElementById("boards")
     const game = new Chess()
@@ -32,10 +32,10 @@
         boardDiv.setAttribute("class", "board")
         boardsDiv.appendChild(boardDiv)
         new Chessboard(boardDiv, {
-            accessible: true,
             responsive: false,
             position: game.fen(),
-            sprite: {url: "../assets/images/chessboard-sprite-staunty.svg"},
+            assetsUrl: "../assets/",
+            style: {pieces: {file: "staunty.svg"}},
         })
         makeRandomMove()
     }
