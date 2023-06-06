@@ -30,7 +30,7 @@ export class Svg {
      * @param attributes
      * @returns {Element}
      */
-    static addElement(parent, name, attributes = {}) {
+    static addElement(parent, name, attributes = {}, sibling = undefined) {
         let element = document.createElementNS(SVG_NAMESPACE, name)
         if (name === "use") {
             attributes["xlink:href"] = attributes["href"] // fix for safari
@@ -47,13 +47,11 @@ export class Svg {
         }
         parent.appendChild(element)
         // SMK: Lugar correcto de inserción. Para ello hay que añadir sibling y pasarlo en addElement.
-        /*
-        if (sibling !== undefined) {
+        if (sibling === undefined) {
             parent.appendChild(element)
         } else {
             parent.insertBefore(element, sibling)
         }
-        */
         return element
     }
 
