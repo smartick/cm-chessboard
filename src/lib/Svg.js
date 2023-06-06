@@ -45,13 +45,15 @@ export class Svg {
                 }
             }
         }
-        // parent.appendChild(element)
-        // SMK: Lugar correcto de inserción.
+        parent.appendChild(element)
+        // SMK: Lugar correcto de inserción. Para ello hay que añadir sibling y pasarlo en addElement.
+        /*
         if (sibling !== undefined) {
             parent.appendChild(element)
         } else {
             parent.insertBefore(element, sibling)
         }
+        */
         return element
     }
 
