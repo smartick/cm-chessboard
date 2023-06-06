@@ -100,7 +100,7 @@ export class Markers extends Extension {
         transform.setTranslate(point.x, point.y)
         markerGroup.transform.baseVal.appendItem(transform)
         // SMK: Absolute path to markers.
-        const spriteUrl = this.getSpriteUrl()
+        const spriteUrl = this.chessboard.props.assetsCache ? "" : this.getSpriteUrl()
         /*
         const spriteUrl = this.chessboard.props.assetsCache ? "" : this.chessboard.props.assetsUrl +
             "extensions/markers/" + this.props.sprite

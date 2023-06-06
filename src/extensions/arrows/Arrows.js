@@ -57,7 +57,7 @@ export class Arrows extends Extension {
         const sqfrom = document.querySelectorAll('[data-square="' + arrow.from + '"]')[0]
         const sqto = document.querySelectorAll('[data-square="' + arrow.to + '"]')[0]
         // SMK: Absolute path to arrows.
-        const spriteUrl = this.getSpriteUrl()
+        const spriteUrl = this.chessboard.props.assetsCache ? "" : this.getSpriteUrl()
         /*const spriteUrl = this.chessboard.props.assetsCache ? "" : this.chessboard.props.assetsUrl +
             "extensions/arrows/" + this.props.sprite
         */
