@@ -45,7 +45,13 @@ export class Svg {
                 }
             }
         }
-        parent.appendChild(element)
+        // parent.appendChild(element)
+        // SMK: Lugar correcto de inserción.
+        if (sibling !== undefined) {
+            parent.appendChild(element)
+        } else {
+            parent.insertBefore(element, sibling)
+        }
         return element
     }
 
