@@ -34,8 +34,12 @@ export class Markers extends Extension {
         }
         Object.assign(this.props, props)
         if (chessboard.props.assetsCache) {
+            // SMK: Absolute path to markers.
+            this.chessboard.view.cacheSpriteToDiv("cm-chessboard-markers", this.getSpriteUrl())
+            /*
             chessboard.view.cacheSpriteToDiv("cm-chessboard-markers", this.chessboard.props.assetsUrl +
                 "extensions/markers/" + this.props.sprite)
+            */
         }
         chessboard.addMarker = this.addMarker.bind(this)
         chessboard.getMarkers = this.getMarkers.bind(this)
@@ -95,8 +99,12 @@ export class Markers extends Extension {
         const transform = (this.chessboard.view.svg.createSVGTransform())
         transform.setTranslate(point.x, point.y)
         markerGroup.transform.baseVal.appendItem(transform)
+        // SMK: Absolute path to markers.
+        const spriteUrl = this.chessboard.props.assetsCache ? "" : this.getSpriteUrl()
+        /*
         const spriteUrl = this.chessboard.props.assetsCache ? "" : this.chessboard.props.assetsUrl +
             "extensions/markers/" + this.props.sprite
+        */
         const markerUse = Svg.addElement(markerGroup, "use",
             {href: `${spriteUrl}#${marker.type.slice}`, class: "marker " + marker.type.class})
         const transformScale = (this.chessboard.view.svg.createSVGTransform())
@@ -135,6 +143,10 @@ export class Markers extends Extension {
         }
         this.markers = this.markers.filter((marker) => !marker.matches(square, type))
         this.onRedrawBoard()
+    }
+
+    getSpriteUrl() {
+        return this.props.sprite
     }
 }
 

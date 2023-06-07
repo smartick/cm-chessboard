@@ -435,6 +435,8 @@ export class ChessboardView {
     }
 
     getSpriteUrl() {
-        return this.chessboard.props.assetsUrl + "pieces/" + this.chessboard.props.style.pieces.file
+        // SMK: Absolute path to pieces.
+        return this.chessboard.props.style.pieces.file;
+        //return this.chessboard.props.assetsUrl + "pieces/" + this.chessboard.props.style.pieces.file
     }
 }
